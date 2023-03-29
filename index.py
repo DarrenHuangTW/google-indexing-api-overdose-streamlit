@@ -1,16 +1,26 @@
 import os
-import base64
 import json
+import base64
+import tempfile
+import requests
 import datetime
-from dateutil import parser
-import httplib2
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 import streamlit as st
+from google.oauth2 import service_account
+from googleapiclient.errors import HttpError
+from googleapiclient.discovery import build
 
 # 環境變量
 JSON_KEY_FILE_BASE64 = st.secrets.get("JSON_KEY_FILE_BASE64")
+
+# 建立暫時檔案在記憶體中
+with tempfile.NamedTemporaryFile(delete=False) as temp_key_file:
+    temp_key_file.write(base64.b64decode(JSON_KEY_FILE_BASE64))
+    temp_key_file.flush()
+    # 建立 Google API 用戶端
+    credentials = service_account.Credentials.from_service_account_file(
+        temp_key_file.name, scopes=["https://www.googleapis.com/auth/indexing"]
+    )
+    http = credentials.authorize(build("indexing", "v3"))
 
 # 將 Base64 字串解碼為字典
 json_key_file_content = base64.b64decode(JSON_KEY_FILE_BASE64).decode("utf-8")
