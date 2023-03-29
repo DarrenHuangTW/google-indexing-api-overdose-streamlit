@@ -1,21 +1,37 @@
 import os
-import os
-import base64
 import json
+import base64
 import datetime
-from dateutil import parser
 import httplib2
+import requests
 from google.oauth2 import service_account
-from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from googleapiclient.discovery import build
 import streamlit as st
 
-# 讀取環境變量
-JSON_KEY_FILE_BASE64 = st.secrets["JSON_KEY_FILE_BASE64"]
+# 讀取 secrets
+secrets = st.secrets["secrets"]
 
-# 將 Base64 字串解碼為字典
-json_key_file_content = base64.b64decode(JSON_KEY_FILE_BASE64).decode("utf-8")
-json_key_file = json.loads(json_key_file_content)
+# 建立服務帳戶金鑰
+service_account_info = {
+    "type": secrets["type"],
+    "project_id": secrets["project_id"],
+    "private_key_id": secrets["private_key_id"],
+    "private_key": secrets["private_key"],
+    "client_email": secrets["client_email"],
+    "client_id": secrets["client_id"],
+    "auth_uri": secrets["auth_uri"],
+    "token_uri": secrets["token_uri"],
+    "auth_provider_x509_cert_url": secrets["auth_provider_x509_cert_url"],
+    "client_x509_cert_url": secrets["client_x509_cert_url"],
+}
+
+credentials = service_account.Credentials.from_service_account_info(
+    service_account_info, scopes=["https://www.googleapis.com/auth/indexing"]
+)
+
+# 建立 Google API 客戶端
+google_client = build("indexing", "v3", credentials=credentials)
 
 # 初始化 Google API 用戶端
 SCOPES = ["https://www.googleapis.com/auth/indexing"]
