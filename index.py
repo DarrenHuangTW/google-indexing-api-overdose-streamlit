@@ -10,7 +10,7 @@ from googleapiclient.errors import HttpError
 import streamlit as st
 
 # 環境變量
-JSON_KEY_FILE_BASE64 = st.secrets["JSON_KEY_FILE_BASE64"]
+JSON_KEY_FILE_BASE64 = st.secrets.get("JSON_KEY_FILE_BASE64")
 
 # 將 Base64 字串解碼為字典
 json_key_file_content = base64.b64decode(JSON_KEY_FILE_BASE64).decode("utf-8")
