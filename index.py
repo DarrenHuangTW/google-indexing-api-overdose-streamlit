@@ -1,25 +1,36 @@
+import os
+import base64
 import json
-import streamlit as st
-from oauth2client.service_account import ServiceAccountCredentials
-import httplib2
 import datetime
 from dateutil import parser
-import re
+import httplib2
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+import streamlit as st
 
+# 環境變量
+JSON_KEY_FILE_BASE64 = os.environ["JSON_KEY_FILE_BASE64"]
+
+# 將 Base64 字串解碼為字典
+json_key_file_content = base64.b64decode(JSON_KEY_FILE_BASE64).decode("utf-8")
+json_key_file = json.loads(json_key_file_content)
+
+# 初始化 Google API 用戶端
 SCOPES = ["https://www.googleapis.com/auth/indexing"]
 ENDPOINT = "https://indexing.googleapis.com/v3/urlNotifications:publish"
-JSON_KEY_FILE = "service_account.json"
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(JSON_KEY_FILE, scopes=SCOPES)
+credentials = service_account.Credentials.from_service_account_info(json_key_file, SCOPES)
 http = credentials.authorize(httplib2.Http())
 
+# 函數：提交 URLs 到 Google
 def submit_urls(urls):
     response_messages = []
     for url in urls:
         url = url.strip()
         if not url:
             continue
-        
+
         content = f"""{{
             "url": "{url}",
             "type": "URL_UPDATED"
@@ -33,7 +44,7 @@ def submit_urls(urls):
             notify_time_str = content_json['urlNotificationMetadata']['latestUpdate']['notifyTime']
             notify_time = parser.isoparse(notify_time_str).replace(microsecond=0)
             formatted_notify_time = notify_time.strftime('%Y年%m月%d日 %H:%M')
-            response_message = f"{url}: 提交成功，提交時間為 {formatted_notify_time}"
+            response_message = f"{url} | 提交成功，提交時間為 {formatted_notify_time}"
         else:
             response_message = f"{url}: 提交失敗"
 
@@ -41,12 +52,18 @@ def submit_urls(urls):
 
     return response_messages
 
+# Streamlit 介面
+st.title("Google 索引提交工具")
 
-st.title("Google URL 提交工具")
-url_textarea = st.text_area("在此處輸入多行 URL（每行一個）")
+urls = st.text_area("請在下方輸入需要提交的網址，每行一個")
+submit_button = st.button("提交")
 
-if st.button("提交"):
-    urls = url_textarea.split('\n')
-    responses = submit_urls(urls)
-    for response in responses:
-        st.write(response)
+if submit_button:
+    if urls:
+        url_list = urls.split("\n")
+        responses = submit_urls(url_list)
+
+        for response in responses:
+            st.write(response)
+    else:
+        st.error("請輸入至少一個網址")
