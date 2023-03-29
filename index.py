@@ -58,9 +58,9 @@ if submit_button and urls_input:
 
     for url, response in responses:
         if isinstance(response, HttpError):
-            st.error(f"{url}: 提交失敗")
+            st.error(f"{url} | 提交失敗，是不是客戶授權失敗啦！")
         else:
             notify_time_str = response.get("urlNotificationMetadata", {}).get("latestUpdate", {}).get("notifyTime", "")
             notify_time = datetime.strptime(notify_time_str.split('.')[0].rstrip('Z'), "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
             notify_time = notify_time.replace(microsecond=0)
-            st.success(f"{url}: 提交成功，提交時間為 {notify_time.strftime('%Y年%m月%d日 %H:%M')}")
+            st.success(f"{url} | 提交成功，提交時間為 {notify_time.strftime('%Y年%m月%d日 %H:%M')}")
