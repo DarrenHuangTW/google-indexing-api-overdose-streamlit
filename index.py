@@ -11,6 +11,8 @@ import streamlit as st
 import pytz
 import logging
 
+print(os.getcwd())
+
 # 設定 logging
 logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
