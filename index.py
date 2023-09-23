@@ -14,7 +14,7 @@ import pytz
 all_secrets = st.secrets
 
 # 創建一個選單讓使用者選擇要使用的 secrets
-selected_secret = st.selectbox('請選擇要使用的 secrets', list(all_secrets.keys()))
+selected_secret = st.selectbox('請選擇要使用的 api，大量戳請選 AMP 並授權相關信箱！', list(all_secrets.keys()))
 
 # 使用選擇的 secrets
 secrets = all_secrets[selected_secret]
