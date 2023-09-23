@@ -9,6 +9,16 @@ from googleapiclient.errors import HttpError
 from googleapiclient.discovery import build
 import streamlit as st
 import pytz
+import logging
+
+# 設定 logging
+logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+
+# 在送出請求前記錄資訊
+logging.info(f"Sending request to URL: {url}")
+
+# 在收到回應後記錄資訊
+logging.info(f"Received response: {response}")
 
 # 讀取所有的 secrets
 all_secrets = st.secrets
