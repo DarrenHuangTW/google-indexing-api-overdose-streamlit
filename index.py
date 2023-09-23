@@ -10,8 +10,14 @@ from googleapiclient.discovery import build
 import streamlit as st
 import pytz
 
-# 讀取 secrets
-secrets = st.secrets["secrets"]
+# 讀取所有的 secrets
+all_secrets = st.secrets
+
+# 創建一個選單讓使用者選擇要使用的 secrets
+selected_secret = st.selectbox('請選擇要使用的 secrets', list(all_secrets.keys()))
+
+# 使用選擇的 secrets
+secrets = all_secrets[selected_secret]
 
 # 建立服務帳戶金鑰
 service_account_info = {
