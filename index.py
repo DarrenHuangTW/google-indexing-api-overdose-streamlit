@@ -53,11 +53,14 @@ if submit_button and urls_input:
         responses = []
         for url in urls:
             try:
+                logging.info(f"Sending request to URL: {url}")
                 response = google_client.urlNotifications().publish(
                     body={"url": url, "type": "URL_UPDATED"}
                 ).execute()
+                logging.info(f"Received response: {response}")
                 responses.append((url, response))
             except HttpError as e:
+                logging.error(f"Error occurred: {e}")
                 responses.append((url, e))
         return responses
 
