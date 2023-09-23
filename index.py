@@ -63,10 +63,10 @@ if submit_button and urls_input:
         else:
             notify_time_str = response.get("urlNotificationMetadata", {}).get("latestUpdate", {}).get("notifyTime", "")
             notify_time = datetime.strptime(notify_time_str.split('.')[0].rstrip('Z'), "%Y-%m-%dT%H:%M:%S").replace(tzinfo=timezone.utc)
-            notify_time = notify_time.replace(microsecond=0)time.strftime('%Y年%m月%d日 %H:%M')}")
-            
+            notify_time = notify_time.replace(microsecond=0)
+
             # 將時間轉換為 UTC+8
             tz = pytz.timezone('Asia/Taipei')
             notify_time = notify_time.astimezone(tz)
-            
+
             st.success(f"{url} | 提交成功，提交時間為 {notify_time.strftime('%Y年%m月%d日 %H:%M')}")
