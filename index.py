@@ -9,12 +9,6 @@ from googleapiclient.errors import HttpError
 from googleapiclient.discovery import build
 import streamlit as st
 import pytz
-import logging
-
-print(os.getcwd())
-
-# 設定 logging
-logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 # 讀取所有的 secrets
 all_secrets = st.secrets
@@ -59,14 +53,11 @@ if submit_button and urls_input:
         responses = []
         for url in urls:
             try:
-                logging.info(f"Sending request to URL: {url}")  # 在送出請求前記錄資訊
                 response = google_client.urlNotifications().publish(
                     body={"url": url, "type": "URL_UPDATED"}
                 ).execute()
-                logging.info(f"Received response: {response}")  # 在收到回應後記錄資訊
                 responses.append((url, response))
             except HttpError as e:
-                logging.error(f"Error occurred: {e}")  # 在發生錯誤時記錄資訊
                 responses.append((url, e))
         return responses
 
