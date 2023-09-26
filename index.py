@@ -10,6 +10,9 @@ from googleapiclient.discovery import build
 import streamlit as st
 import pytz
 
+# Streamlit 應用介面
+st.title("Google 索引提交工具", divider='rainbow')
+
 # 讀取所有的 secrets
 all_secrets = st.secrets
 
@@ -39,10 +42,6 @@ credentials = service_account.Credentials.from_service_account_info(
 
 # 建立 Google API 客戶端
 google_client = build("indexing", "v3", credentials=credentials)
-
-# Streamlit 應用介面
-st.title("Google 索引提交")
-
 
 # 使用文件
 st.markdown("Index api 工具使用文件：[https://bit.ly/45mHyGJ](https://bit.ly/45mHyGJ)")
