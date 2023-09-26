@@ -11,7 +11,7 @@ import streamlit as st
 import pytz
 
 # Streamlit 應用介面
-st.title("Google 索引提交工具", divider='rainbow')
+st.header("Google 索引提交工具", divider='rainbow')
 
 # 讀取所有的 secrets
 all_secrets = st.secrets
