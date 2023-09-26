@@ -13,6 +13,9 @@ import pytz
 # 讀取所有的 secrets
 all_secrets = st.secrets
 
+# 使用文件
+st.markdown("Index api 工具使用文件：[https://bit.ly/45mHyGJ](https://bit.ly/45mHyGJ)")
+
 # 創建一個選單讓使用者選擇要使用的 secrets
 selected_secret = st.selectbox('請選擇要使用的 api，大量戳請選 AMP 並授權相關信箱！', list(all_secrets.keys()))
 
