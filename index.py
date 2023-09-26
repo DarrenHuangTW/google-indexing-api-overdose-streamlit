@@ -14,7 +14,7 @@ import pytz
 all_secrets = st.secrets
 
 # 創建一個選單讓使用者選擇要使用的 secrets
-selected_secret = st.selectbox('請選擇要使用的 api，大量戳請選 AMP 並授權相關信箱！', list(all_secrets.keys()))
+selected_secret = st.selectbox('請選擇要使用的 api，大量戳請選 AMP 並授權相關信箱！', list(all_secrets.keys()), divider='rainbow')
 
 # 使用選擇的 secrets
 secrets = all_secrets[selected_secret]
@@ -47,7 +47,7 @@ st.title("Google 索引提交")
 # 使用文件
 st.markdown("Index api 工具使用文件：[https://bit.ly/45mHyGJ](https://bit.ly/45mHyGJ)")
 st.markdown('''
-    :rainbow[請統一由 SEO Team 的羲彤處理].''')
+    :rainbow[請統一由 SEO Team 負責的專員協助處理]。''')
 
 urls_input = st.text_area("請輸入要提交的網址（每行一個）")
 submit_button = st.button("提交")
